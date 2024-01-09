@@ -104,6 +104,7 @@ internal class BoMCollector
 					.Field("wind_dir", observation.wind_dir)
 					.Field("wind_spd_kmh", observation.wind_spd_kmh)
 					.Field("gust_kmh", observation.gust_kmh)
+					.Field("dewpt",observation.dewpt)
 					.Timestamp(measurementTime, WritePrecision.S);
 				// Add location Ids. The result from this is an array but appears to be a length of 1 so we check
 				// that we have header details before adding them, just incase responses change in the future
