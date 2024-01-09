@@ -70,7 +70,7 @@ internal class BoMCollector
 		_logger = logger;
 		_client = new HttpClient();
 		_client.DefaultRequestHeaders.Add("X-Scraper", "Nulah.BoMDataCollector");
-		_client.DefaultRequestHeaders.Add("X-Contact", "https://github.com/ZacMillionaire");
+		_client.DefaultRequestHeaders.Add("X-Source", "https://github.com/ZacMillionaire/Nulah.BoMDataCollector");
 		_client.DefaultRequestHeaders.Add("X-Target-Interval", "30m");
 	}
 
