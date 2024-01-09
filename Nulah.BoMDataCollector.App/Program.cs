@@ -91,12 +91,16 @@ internal class BoMCollector
 			{
 				var measurementTime = DateTime.ParseExact(observation.aifstime_utc, "yyyyMMddHHmmss", CultureInfo.InvariantCulture);
 
+				// rain trace can also be a single dash in the response, but lets treat it as if it could be any invalid decimal
+				// value instead and use a TryParse
+				var rainTraceParsed = decimal.TryParse(observation.rain_trace, out var rainTrace);
+
 				var point = PointData.Measurement("weather-data").Tag("source", "Bureau of Meteorology")
 					.Field("apparent_t", observation.apparent_t)
 					// this is also known as wet bulb
 					.Field("delta_t", observation.delta_t)
 					.Field("rel_hum", observation.rel_hum)
-					.Field("rain_trace", decimal.Parse(observation.rain_trace))
+					.Field("rain_trace", rainTraceParsed ? rainTrace : null)
 					// these 3 are probably all the same
 					.Field("press", observation.press)
 					.Field("press_msl", observation.press_msl)
@@ -104,8 +108,9 @@ internal class BoMCollector
 					.Field("wind_dir", observation.wind_dir)
 					.Field("wind_spd_kmh", observation.wind_spd_kmh)
 					.Field("gust_kmh", observation.gust_kmh)
-					.Field("dewpt",observation.dewpt)
+					.Field("dewpt", observation.dewpt)
 					.Timestamp(measurementTime, WritePrecision.S);
+
 				// Add location Ids. The result from this is an array but appears to be a length of 1 so we check
 				// that we have header details before adding them, just incase responses change in the future
 				if (header != null)
